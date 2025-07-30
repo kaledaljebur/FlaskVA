@@ -1,0 +1,2 @@
+{% extends 'base.html' %}
+{% block content %}<h2>XSS Demo</h2><form><input name="q"><button>Test</button></form><p>Result: {{ input|safe }}</p>{% endblock %}

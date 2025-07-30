@@ -1,0 +1,97 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+.container {
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 700px;
+  margin: 2em auto;
+}
+h1, h2 {
+  color: #005999;
+}
+.highlight {
+  color: #cc0000;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+ul li {
+  margin: 10px 0;
+}
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+.btn-help, .btn-submit {
+  background: #0077cc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+.btn-help:hover, .btn-submit:hover {
+  background: #005fa3;
+}
+
+
+.top-nav {
+  background-color: #005999;
+  color: white;
+  padding: 0.8rem 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  justify-content: center; 
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 2rem;
+}
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.logo {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+main {
+  padding-top: 70px; 
+}

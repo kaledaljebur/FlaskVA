@@ -1,0 +1,7 @@
+env/*
+# build/*
+# *.spec
+flask_session/*
+modules/__pycache__/*
+__pycache__/*
+static/uploads/*

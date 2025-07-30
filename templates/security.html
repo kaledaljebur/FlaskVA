@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Security Settings</h2>
+<form method="POST">
+  <label for="level">Choose security level:</label>
+  <select name="level" id="level">
+    <option value="low" {% if current == 'low' %}selected{% endif %}>Low</option>
+    <option value="medium" {% if current == 'medium' %}selected{% endif %}>Medium</option>
+    <option value="high" {% if current == 'high' %}selected{% endif %}>High</option>
+    <option value="impossible" {% if current == 'impossible' %}selected{% endif %}>Impossible</option>
+  </select>
+  <button type="submit" class="btn-submit">Set</button>
+</form>
+{% endblock %}

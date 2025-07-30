@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">
+    <input type="text" name="userid" placeholder="Enter user ID">
+    <button type="submit">Search</button>
+</form>
+<p>{{ result }}</p>
+{% endblock %}

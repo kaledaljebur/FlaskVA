@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post">
+    <input type="text" name="host" placeholder="Enter host">
+    <button type="submit">Ping</button>
+</form>
+<pre>{{ output }}</pre>
+{% endblock %}
