@@ -1,10 +1,30 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, g
 from config import SECRET_KEY, SECURITY_LEVEL
 from modules import auth, sqli, upload, command, xss, ssrf, idor, security
+import pymysql
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "siudhisuhgiubgidno23u09"
 users = {"admin": "mustang"}
+
+DB_CONFIG = {
+    "host": "localhost",
+    "user": "flaskva",
+    "password": "flaskva",
+    "database": "flaskva"
+}
+
+def get_db():
+    if "db" not in g:
+        g.db = pymysql.connect(**DB_CONFIG)
+    return g.db
+
+@app.teardown_appcontext
+def close_db(exception):
+    db = g.pop("db", None)
+    if db is not None:
+        db.close()
 
 @app.route('/')
 def index():
@@ -18,10 +38,22 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        if username in users and users[username] == password:
-            session["user"] = username
-            return redirect(url_for("index"))
-        else:
+
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT password FROM users WHERE username = %s", (username,))
+        row = cur.fetchone()
+
+        if row:
+            stored_password = row[0]
+            if check_password_hash(stored_password, password):
+                session["user"] = username
+                return redirect(url_for("index"))
+
+        # if username in users and users[username] == password:
+        #     session["user"] = username
+        #     return redirect(url_for("index"))
+        # else:
             return render_template("login.html", error="Invalid login")
     return render_template("login.html")
 
