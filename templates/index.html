@@ -1,7 +1,11 @@
-{% extends 'base.html' %}
-{% block content %}
-<h1>Welcome to <span class="highlight">FlaskVA</span> – Flask Vulnerable App</h1>
-<p>This lightweight platform simulates common web application vulnerabilities for educational use.</p>
+{% extends 'base.html' %} {% block content %}
+<h1>
+  Welcome to <span class="highlight">FlaskVA</span> – Flask Vulnerable App
+</h1>
+<p>
+  This lightweight platform Flask(Python)-based simulates common web application
+  vulnerabilities for educational use.
+</p>
 <!-- <p>Current Security Level: <strong>{{ security }}</strong> [<a href="/security">Change</a>]</p> -->
 <ul>
   <li><a href="/sqli">SQL Injection</a></li>
@@ -12,17 +16,4 @@
   <li><a href="/idor">Insecure Direct Object Reference (IDOR)</a></li>
 </ul>
 <p><a href="/help" class="btn-help">Need help?</a></p>
-      <h2>📫 Contact</h2>
-      <p>
-        Created by: <strong>Kaled Aljebur</strong><br />
-        Email:
-        <a href="mailto:kaledaljebur@gmail.com">kaledaljebur@gmail.com</a>
-      </p>
-
-      <footer>
-        <p>
-          FlaskVA – Designed for education and ethical hacking
-          training.
-        </p>
-      </footer>
-{% endblock %}
+{% include 'footer.html' %} {% endblock %}

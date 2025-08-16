@@ -1,22 +1,18 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>Help Page</h2>
+{% extends 'base.html' %} {% block content %}
+<h2>Help Page - Under construction</h2>
 <p>Use this app to test security vulnerabilities in a safe environment.</p>
 <ul>
+  <li>
+    Use may use the default credentials for the main login form:
+    <b>admin/mustang</b>.
+  </li>
+  <!-- 
   <li>Multiple security levels: low to impossible</li>
-  <li>Do not expose this to the public internet</li>
+  -->
+  <li>Do not expose this to the public internet.</li>
+  <li>
+    Please refer to the lectures for attacking scenarios, I will upload the
+    scenarios here when I can.
+  </li>
 </ul>
-      <h2>📫 Contact</h2>
-      <p>
-        Created by: <strong>Kaled Aljebur</strong><br />
-        Email:
-        <a href="mailto:kaledaljebur@gmail.com">kaledaljebur@gmail.com</a>
-      </p>
-
-      <footer>
-        <p>
-          FlaskVA – Designed for education and ethical hacking
-          training.
-        </p>
-      </footer>
-{% endblock %}
+{% include 'footer.html' %} {% endblock %}

@@ -1,8 +1,18 @@
-{% extends 'base.html' %}
-{% block content %}
-<form method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <button type="submit">Login</button>
+{% extends 'base.html' %} {% block content %}
+<!-- <div class="container"> -->
+<h2>Login to FlaskVA</h2>
+{% if error %}
+<p class="highlight">{{ error }}</p>
+{% endif %}
+<form method="post" class="login-form">
+  <div class="form-group">
+    <input type="text" name="username" placeholder="Username" required />
+  </div>
+  <div class="form-group">
+    <input type="password" name="password" placeholder="Password" required />
+  </div>
+  <button type="submit" class="btn-submit">Login</button>
 </form>
+<!-- </div> -->
+<!-- <p><a href="/help" class="btn-help">Need help?</a></p> -->
 {% endblock %}

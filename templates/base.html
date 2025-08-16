@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>FlaskVA – Flask Vulnerable App</title>
-  <link rel="stylesheet" href="/static/style.css" />
-  <link rel="icon" href="/static/kaled.aljebur.ico" type="image/x-icon" />
-</head>
-<body>
-      <nav class="top-nav">
-    <div class="nav-container">
-      <a href="/" class="logo">FlaskVA</a>
-      <div class="nav-links">
-        <!-- <a href="/">Home</a> -->
-        <a href="/help">Help</a>
-        <!-- <a href="/security">Security</a> -->
-        <a href="/sqli">SQLi</a>
-        <a href="/upload">Upload</a>
-        <a href="/command">Command</a>
-        <a href="/xss">XSS</a>
-        <a href="/ssrf">SSRF</a>
-        <a href="/idor">IDOR</a> 
+  <head>
+    <meta charset="UTF-8" />
+    <title>FlaskVA – Flask Vulnerable App</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="icon" href="/static/kaled.aljebur.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="nav-container">
+        <!-- <a href="/" class="logo"><span class="highlight2">FlaskVA</span></a> -->
+        <a href="/" class="logo">FlaskVA</a>
+        <div class="nav-links">
+          <!-- <a href="/">Home</a> -->
+          <a href="/help">Help</a>
+          <!-- <a href="/security">Security</a> -->
+          <a href="/sqli">SQLi</a>
+          <a href="/upload">Upload</a>
+          <a href="/command">Command</a>
+          <a href="/xss">XSS</a>
+          <a href="/ssrf">SSRF</a>
+          <a href="/idor">IDOR</a>
+          {% if session.get('user') %}
+          <a href="/logout">logout</a>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </nav>
-  <main>
-    <div class="container">
-      {% block content %}{% endblock %}
-    </div>
-  </main>
-</body>
+    </nav>
+    <main>
+      <div class="container">{% block content %}{% endblock %}</div>
+    </main>
+    <footer class="footer">
+      <p>&copy; 2025 FlaskVA Project | Created by Kaled Aljebur</p>
+    </footer>
+  </body>
 </html>
