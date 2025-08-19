@@ -13,6 +13,10 @@
   </div>
   <button type="submit" class="btn-submit">Login</button>
 </form>
+{% if error_message %}
+<div>&nbsp;</div>
+<div class="error-box">{{ error_message }}</div>
+{% endif %}
 <!-- </div> -->
 <!-- <p><a href="/help" class="btn-help">Need help?</a></p> -->
 {% endblock %}

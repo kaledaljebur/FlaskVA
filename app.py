@@ -54,7 +54,7 @@ def login():
         #     session["user"] = username
         #     return redirect(url_for("index"))
         # else:
-            return render_template("login.html", error="Invalid login")
+        return render_template("login.html", error="Invalid login", error_message="The default credentials: admin/mustang"), 401
     return render_template("login.html")
 
 @app.route("/logout")
