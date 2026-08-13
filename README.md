@@ -8,7 +8,7 @@ FlaskVA is an intentionally vulnerable training application. Use it only in the 
 
 ## Screenshot
 
-![FlaskVA home page showing the vulnerable app modules](image.png)
+![FlaskVA home page showing the vulnerable app modules](flaskva-home.png)
 
 ## FlaskVA in the Hullu VM
 
