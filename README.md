@@ -10,7 +10,7 @@ FlaskVA is an intentionally vulnerable training application. Use it only in the 
 
 ![FlaskVA home page showing the vulnerable app modules](image.png)
 
-# FlaskVA in the Hullu VM
+## FlaskVA in the Hullu VM
 
 FlaskVA is included in the Hullu vulnerable Alpine Linux OVA. You can download it from [SourceForge](https://sourceforge.net/projects/hullu/files).
 
@@ -18,7 +18,20 @@ Hullu documentation, VM details, and lab credentials: https://github.com/kaledal
 
 For Hullu setup, lab topology, VM import steps, networking, prerequisites, and credentials, use the Hullu repository. This README focuses on FlaskVA usage and the web-application scenarios inside the Hullu lab.
 
-# How to run FlaskVA manually
+## Included Modules
+
+FlaskVA includes vulnerable modules for:
+
+- SQL injection
+- File upload
+- Command injection
+- Cross-site scripting (XSS)
+- Server-side request forgery (SSRF)
+- Insecure direct object reference (IDOR)
+
+These modules are used to generate lab activity that can later be reviewed from a defensive and blue-team perspective.
+
+## How to run FlaskVA manually
 
 ```sh
 git clone https://github.com/kaledaljebur/FlaskVA
@@ -47,7 +60,7 @@ python app.py
 
 Open FlaskVA at `http://127.0.0.1:5000/` when running it locally. If you are using the Hullu OVA, use the VM details and credentials from the Hullu repository.
 
-# Learning Objectives
+## Learning Objectives
 
 FlaskVA is designed to support both offensive understanding and defensive analysis. The attack steps in this README are included so learners can generate realistic activity inside their own Hullu lab, then investigate that activity from a blue-team point of view.
 
@@ -57,7 +70,7 @@ FlaskVA is designed to support both offensive understanding and defensive analys
 - Prepare evidence for defensive workflows using tools such as Suricata and Wazuh.
 - Learn what indicators should be monitored, alerted on, and cleaned up after a lab exercise.
 
-# Known Lab Assumptions
+## Known Lab Assumptions
 
 - IP addresses such as `192.168.8.10` are examples. Replace them with your Kali attacker VM IP.
 - `<Hullu-IP>` means the IP address assigned to your Hullu VM.
@@ -65,15 +78,17 @@ FlaskVA is designed to support both offensive understanding and defensive analys
 - Some scenarios depend on Hullu-specific misconfigurations, such as SUID `wget`, and may not work on a normal Linux system.
 - Commands shown in the FlaskVA command injection page are typed into the vulnerable web form, not directly into a local shell, unless the step says "On Kali" or "SSH to Hullu".
 
-# Version Notes
+## Version Notes
 
 - The scenarios below were tested in Kali against Hullu3.
 - Hullu and FlaskVA may change over time, so confirm VM-specific details, credentials, and networking notes in the Hullu repository.
 - If a scenario does not behave as expected, verify the Hullu version and whether the required lab misconfiguration is present before changing the steps.
 
-# Cleanup After Lab Practice
+## Cleanup After Lab Practice
 
-After completing a scenario, SSH to the Hullu VM as `root` using the credentials documented in the Hullu repository, then remove the lab artifacts you created. This keeps the VM ready for blue-team review, re-practice, or snapshot cleanup.
+After completing a scenario, collect the logs, alerts, network captures, screenshots, and other evidence needed for analysis before removing lab artifacts.
+
+Then SSH to the Hullu VM as `root` using the credentials documented in the Hullu repository and remove the artifacts you created. This keeps the VM ready for blue-team review, re-practice, or snapshot cleanup.
 
 Example cleanup checks:
 
@@ -82,21 +97,22 @@ rm -f /etc/sudoers.d/flaskva
 sed -i '/flaskva ALL=(ALL) NOPASSWD: ALL/d' /etc/sudoers
 sed -i '/%wheel ALL=(ALL) ALL/d' /etc/sudoers
 deluser james 2>/dev/null
+rm -rf /home/james
 rm -f /home/flaskva/FlaskVA/static/uploads/shell.png
 rm -f /home/flaskva/FlaskVA/static/uploads/shell.elf
 ```
 
 If you are using VM snapshots, the cleanest reset is to revert to a known-good Hullu snapshot after collecting the logs and evidence needed for analysis.
 
-# Sample Scenarios (tested in Kali)
+## Sample Scenarios (tested in Kali)
 
 The following scenarios are for authorized Hullu lab practice only. Run them from an isolated attacker VM, such as Kali, against your own Hullu VM.
 
-## Privilege escalation via SUID wget (working in Hullu3)
+### Privilege escalation via SUID wget (working in Hullu3)
 
 Assumption: FlaskVA runs via `flaskva` account, command injection works, and `wget` has SUID enabled.
 
-### About the SUID `wget` misconfiguration
+#### About the SUID `wget` misconfiguration
 
 In this lab, `/usr/bin/wget` may be intentionally misconfigured with the SUID bit. That means `wget` runs with the file owner's privileges, usually `root`, instead of only the privileges of the current user. You can identify the misconfiguration when the permissions include `s`, for example:
 
@@ -106,7 +122,7 @@ In this lab, `/usr/bin/wget` may be intentionally misconfigured with the SUID bi
 
 On a normal hardened system, `wget` should not be SUID. In Hullu, this misconfiguration is included for isolated privilege-escalation practice, such as writing a lab sudoers drop-in file or reading protected files after you already have command execution.
 
-### 1. Crack the passwords
+#### 1. Password hash extraction and cracking
 - Confirm command execution in `http://<Hullu-IP>:5000/command`:
 
     ```sh
@@ -154,9 +170,9 @@ On a normal hardened system, `wget` should not be SUID. In Hullu, this misconfig
     john hashes.txt
     ```
 
-### 2. Privilege escalation
+#### 2. Privilege escalation
 
-#### Method A: Add sudoers drop-in file to `/etc/sudoers.d/`
+##### Method A: Add sudoers drop-in file to `/etc/sudoers.d/`
 - Prepare sudoers payload on Kali:
 
     ```sh
@@ -182,7 +198,7 @@ On a normal hardened system, `wget` should not be SUID. In Hullu, this misconfig
     127.0.0.1; sudo rm /etc/sudoers.d/flaskva
     ```
 
-#### Method B: Update `/etc/sudoers` file
+##### Method B: Update `/etc/sudoers` file
 - Send the current `/etc/sudoers` file to Kali Desktop.
 
     On Kali:
@@ -228,7 +244,7 @@ On a normal hardened system, `wget` should not be SUID. In Hullu, this misconfig
     127.0.0.1; sudo sed -i '/flaskva/d' /etc/sudoers
     ```
 
-## Meterpreter session via disguised ELF upload (working in Hullu3)
+### Meterpreter session via disguised ELF upload (working in Hullu3)
 
 Assumption: FlaskVA upload and command injection are available.
 
@@ -297,7 +313,7 @@ Assumption: FlaskVA upload and command injection are available.
         ```
     - If the Wget misconfiguration is not available, move to `CVE-2026-31431 CopyFail Vulnerability`.
   
-## CVE-2026-31431 CopyFail Vulnerability
+### CVE-2026-31431 CopyFail Vulnerability
 
 - CopyFail is a Linux local privilege escalation vulnerability. Use this only after you already have authorized code execution in your own Hullu lab VM.
 
@@ -320,7 +336,7 @@ Assumption: FlaskVA upload and command injection are available.
   id
   ```
 
-## Lab-only persistence account practice
+### Lab-only persistence account practice
 
 - In any of the above lab sessions, you can practice creating a root-level persistence account inside the disposable Hullu VM:
   ```sh
