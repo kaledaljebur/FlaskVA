@@ -49,6 +49,16 @@ The following scenarios are for authorized Hullu lab practice only. Run them fro
 
 Assumption: FlaskVA runs via `flaskva` account, command injection works, and `wget` has SUID enabled.
 
+### About the SUID `wget` misconfiguration
+
+In this lab, `/usr/bin/wget` may be intentionally misconfigured with the SUID bit. That means `wget` runs with the file owner's privileges, usually `root`, instead of only the privileges of the current user. You can identify the misconfiguration when the permissions include `s`, for example:
+
+```sh
+-rwsr-xr-x 1 root root ... /usr/bin/wget
+```
+
+On a normal hardened system, `wget` should not be SUID. In Hullu, this misconfiguration is included for isolated privilege-escalation practice, such as writing a lab sudoers drop-in file or reading protected files after you already have command execution.
+
 ### 1. Crack the passwords
 - Confirm command execution in `http://<Hullu-IP>:5000/command`:
 
