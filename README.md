@@ -106,5 +106,5 @@ If you are using VM snapshots, the cleanest reset is to revert to a known-good H
 
 ## Practice Guides
 
-- Red Team: [red-team.md](red-team.md) contains attack scenarios used to generate lab activity in Hullu.
-- Blue Team: defensive monitoring and investigation with Suricata and Wazuh is covered in [SuriZuh](https://github.com/kaledaljebur/SuriZuh).
+- [Red Team](red-team.md): `red-team.md` contains possible attack scenarios used to generate lab activity in Hullu.
+- [Blue Team](https://github.com/kaledaljebur/SuriZuh): in `SuriZuh` repository, it is defensive monitoring and investigation with Suricata and Wazuh virtual lab.
