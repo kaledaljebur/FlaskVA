@@ -334,3 +334,130 @@ Expected Suricata/network evidence:
 Cleanup performed:
 Open questions:
 ```
+
+## Blue-Team Log Triage Preview
+
+Run these from an authorized SSH session on Hullu after a scenario. These commands do not assume the attacker IP or payload filename. Use the [SuriZuh blue-team repository](https://github.com/kaledaljebur/SuriZuh) for the full Wazuh and Suricata investigation.
+
+Common options used below:
+
+- `grep -r -n -E -i`: search recursively, show line numbers, use extended patterns, and ignore case.
+- `grep -h -o`: hide filenames and print only the matched text.
+- `ls -l -a -h`: show long output, hidden files, and human-readable sizes.
+- `find -type f`: show files only.
+- `find -perm -111`: show files with any executable permission bit.
+- `netstat -t -u -n -a -p`: show TCP, UDP, numeric addresses, all sockets, and process names.
+
+### General checks
+
+```sh
+ls -lah /var/log
+```
+
+```sh
+grep -r -n -E -i "flaskva|python|werkzeug|command|upload|sudo|wget" /var/log
+```
+
+```sh
+grep -r -h -E -o "([0-9]{1,3}\.){3}[0-9]{1,3}" /var/log | sort | uniq -c | sort -nr
+```
+
+```sh
+ps
+```
+
+```sh
+netstat -t -u -n -a -p
+```
+
+### SUID wget scenario
+
+```sh
+grep -r -n -E -i "whoami|find / -perm|/usr/bin/wget|wget|--post-file|/etc/passwd|/etc/shadow|/etc/sudoers|NOPASSWD|sudo -n|chmod 440" /var/log
+```
+
+```sh
+ls -l /usr/bin/wget
+```
+
+```sh
+ls -l /etc/sudoers
+```
+
+```sh
+ls -lah /etc/sudoers.d
+```
+
+```sh
+grep -r -n -E -i "flaskva|NOPASSWD|wheel|ALL=" /etc/sudoers /etc/sudoers.d
+```
+
+### Disguised ELF upload scenario
+
+```sh
+grep -r -n -E -i "upload|static/uploads|chmod|mv |reverse|connect|wget|sudo" /var/log
+```
+
+```sh
+ls -lah /var/www/localhost/htdocs/flaskva/static/uploads
+```
+
+```sh
+find /var/www/localhost/htdocs/flaskva/static/uploads -type f -print
+```
+
+```sh
+find /var/www/localhost/htdocs/flaskva/static/uploads -type f -perm -111 -print
+```
+
+```sh
+find /var/www/localhost/htdocs/flaskva/static/uploads -type f -exec sh -c 'head -c 4 "$1" | grep -q ELF && echo "$1"' sh {} \;
+```
+
+```sh
+ps | grep -E -i "python|flask|wget|chmod|uploads|static/uploads" | grep -v grep
+```
+
+```sh
+netstat -t -u -n -a -p
+```
+
+### CopyFail scenario
+
+```sh
+grep -r -n -E -i "copy|fail|CVE|/tmp|githubusercontent|python3|/usr/bin/su|uid=0|kernel|AF_ALG" /var/log
+```
+
+```sh
+ls -lah /tmp
+```
+
+```sh
+find /tmp -maxdepth 1 -type f -ls
+```
+
+```sh
+ps | grep -E -i "python3|su|wget" | grep -v grep
+```
+
+### Persistence account scenario
+
+```sh
+grep -r -n -E -i "adduser|useradd|wheel|sudoers|passwd|shadow|group|sudo|login|deluser" /var/log
+```
+
+```sh
+cat /etc/passwd
+```
+
+```sh
+cat /etc/group
+```
+
+```sh
+grep -r -n -E -i "NOPASSWD|wheel|ALL=" /etc/sudoers /etc/sudoers.d
+```
+
+```sh
+ls -lah /home
+```

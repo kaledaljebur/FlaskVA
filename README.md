@@ -110,10 +110,9 @@ Example cleanup checks:
 rm -f /etc/sudoers.d/flaskva
 sed -i '/flaskva ALL=(ALL) NOPASSWD: ALL/d' /etc/sudoers
 sed -i '/%wheel ALL=(ALL) ALL/d' /etc/sudoers
-deluser james 2>/dev/null
+deluser james
 rm -rf /home/james
-rm -f /home/flaskva/FlaskVA/static/uploads/shell.png
-rm -f /home/flaskva/FlaskVA/static/uploads/shell.elf
+rm -rf /var/www/localhost/htdocs/flaskva/static/uploads/*
 ```
 
 If you are using VM snapshots, the cleanest reset is to revert to a known-good Hullu snapshot after collecting the logs and evidence needed for analysis.
